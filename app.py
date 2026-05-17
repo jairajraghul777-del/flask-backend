@@ -1,16 +1,20 @@
 from flask import Flask, request, jsonify
-import mysql.connector
+import psycopg2
 
 app = Flask(__name__)
 
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="900billion@yuvraj1s",
-    database="myapp"
+# Supabase PostgreSQL connection
+conn = psycopg2.connect(
+    host="aws-1-ap-northeast-1.pooler.supabase.com",
+    port=6543,
+    database="postgres",
+    user="postgres.mymlxkrilepfnxsokctn",
+    password="1000billion@yjm3",
+    sslmode="require"
 )
 
-cursor = db.cursor()
+cursor = conn.cursor()
+
 
 @app.route('/')
 def home():
@@ -21,33 +25,20 @@ def home():
 def signup():
     data = request.get_json()
 
-    name = data.get('name')
-    password = data.get('password')
+    name = data.get("name")
+    password = data.get("password")
 
-    # Empty check
-    if not name or not password:
-        return jsonify({
-            "success": False,
-            "message": "Name and Password required"
-        }), 400
+    query = """
+    INSERT INTO users (name, password)
+    VALUES (%s, %s)
+    """
 
-    # Insert into table
-    query = "INSERT INTO users (name, password) VALUES (%s, %s)"
-    values = (name, password)
-
-    cursor.execute(query, values)
-    db.commit()
-
-    return jsonify({
-        "success": True,
-        "message": "Signup Successful"
-    })
-
-
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=10000)
- 
- 
+    cursor.execute(query, (name, password))
+    conn
+  
+    if __name__ == "__main__":
+     app.run(host="0.0.0.0", port=10000)
+   
  
  
  
