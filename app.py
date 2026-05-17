@@ -1,4 +1,4 @@
- from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify
 import mysql.connector
 
 app = Flask(__name__)
@@ -6,7 +6,7 @@ app = Flask(__name__)
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="900billion@yuvraj1",
+    password="900billion@yuvraj1s",
     database="myapp"
 )
 
